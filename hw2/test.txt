@@ -1,0 +1,15 @@
+INSERT
+03948
+Tom
+Brady
+Physics
+3.40
+12
+
+INSERT
+03491
+Joe
+Flacco
+Chemistry
+3.91
+12
