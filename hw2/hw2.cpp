@@ -15,6 +15,10 @@ void readVariables(ifstream & infilename, int& idNum, string& firstName, string&
 
 int main(int argc, char* argv[])
 {
+
+
+
+
 	ArgumentManager am(argc, argv);
 	const string infilename = am.get("A");
 	const string outfilename = am.get("C");
