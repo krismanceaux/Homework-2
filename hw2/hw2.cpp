@@ -199,6 +199,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 				credits = "0";
 				cout << "Your credits: " << e << " is in the wrong format. It must be a whole number between 0 and 15." << endl;
 			}
+
 			b6 -= 6;
 		}
 		count++;

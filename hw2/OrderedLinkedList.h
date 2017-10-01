@@ -221,6 +221,7 @@ void OrderedLinkedList<Type>::PRINT_BY_GPA(string& gpa, ofstream& outfile)
 	outfile << endl;
 }
 
+
 template <class Type>
 void OrderedLinkedList<Type>::PRINT_STUDENT(string& firstName, string& lastName, ofstream& outfile)
 {
