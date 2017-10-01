@@ -45,6 +45,8 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 	nodeType<string>* previous, string idNum, string firstName,
 	string lastName, string major, string gpa, string credits)
 {
+
+
 	nodeType<string> * node = new nodeType<string>
 		(nullptr, nullptr, idNum, firstName, lastName, major, gpa, credits);
 	//if the file is empty just insert the node
@@ -57,13 +59,60 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 	//if the file is not empty, walk through the list to find the alphabetical position to insert the node.
 	else if (!this->isEmptyList()){
 		nodeType<string>* reader = this->first;
-		//while the reader does not hit null and the current node's last name comes before the passed-in last name alphabetically
-		while (reader && lastName >= reader->lastName)
+		//while reader is not null and (the passed in last name is greater than reader or (the last names are equal and the passed in first name is greater than reader))
+		while (reader && (lastName > reader->lastName || (lastName == reader->lastName && firstName > reader->firstName)))
 		{
 			reader = reader->next;
 		}
+
+		//If the names are equal, compare ID numbers and reject duplicates
+		if(reader && reader->lastName == lastName)
+		{
+			if(reader->firstName == firstName || reader->idNum == idNum)
+			{
+				cout << "Duplicate entry. Input rejected." << endl;
+				delete node;
+			}
+			//if not, order by first name
+			else
+			{
+				//insert in front of reader
+				if(reader->firstName > firstName)
+				{
+					node->next = reader;
+					node->previous = reader->previous;
+					//If the if the node that reader landed on is the first node
+					if (reader->previous != nullptr) {
+						reader->previous->next = node;
+					}
+					reader->previous = node;
+
+					//If the node we are inserting in front of is the first item in the list, point first to the new node to 
+					//avoid losing the new nodes
+					if (this->first == reader)
+					{
+						this->first = node;
+					}
+				}
+				else
+				{
+					node->previous = reader;
+					node->next = reader->next;
+					//If the if the node that reader landed on is the last node
+					if (reader->next != nullptr) {
+						reader->next->previous = node;
+					}
+					reader->next = node;
+					if(this->last == reader)
+					{
+						this->last = node;
+					}
+				}
+			}
+		}
+
 		//If we've made it to the very end of the list
-		if(reader == nullptr)
+		else if(reader == nullptr)
 		{
 			node->next = nullptr;
 			node->previous = this->last;
@@ -73,8 +122,10 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 		//Insert in front of the node that reader stopped on
 		else
 		{
+			
 			node->next = reader;
 			node->previous = reader->previous;
+			//If the if the node that reader landed on 
 			if (reader->previous != nullptr){
 				reader->previous->next = node;
 			}
