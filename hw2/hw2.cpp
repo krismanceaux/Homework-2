@@ -9,7 +9,7 @@
 
 using namespace std;
 
-void readFile(ifstream & infilename, OrderedLinkedList<nodeType<string>>& olList);
+void readFile(ifstream & infilename, ofstream& outfilename, OrderedLinkedList<nodeType<string>>& olList);
 void readVariables(ifstream & infilename, string& idNum, string& firstName, string& lastName, string& major, string& gpa, string& credits);
 int charCount(string& str);
 bool checkGPA(string& GPA2);
@@ -23,11 +23,11 @@ int main(int argc, char* argv[])
 	
 	ifstream infile{ infilename };
 	OrderedLinkedList<nodeType<string>> olList{};
-
-	readFile(infile, olList);
+	ofstream outfile(outfilename);
+	readFile(infile, outfile, olList);
 	infile.close();
 
-	olList.PRINT_ROSTER();
+	//olList.PRINT_ROSTER(outfile);
 
 
 	
@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
 
 
 
-void readFile(ifstream & infile, OrderedLinkedList<nodeType<string>>& olList)
+void readFile(ifstream & infile, ofstream & outfile, OrderedLinkedList<nodeType<string>>& olList)
 {
 	string line{ "" };
 	string idNum{ "0" };
@@ -59,8 +59,10 @@ void readFile(ifstream & infile, OrderedLinkedList<nodeType<string>>& olList)
 			
 			olList.INSERT(nullptr, nullptr, idNum, firstName, lastName, major, gpa, credits);
 		}
-		//else if line is PRINT_ROSTER
-			//call the PRINT_ROSTER function						TODO: IMPLEMENT FUNCTION
+		else if (line == "PRINT_ROSTER")
+		{
+			olList.PRINT_ROSTER(outfile);
+		}
 
 		//else if line is PRINT_BY_MAJOR
 			//call readVariables
