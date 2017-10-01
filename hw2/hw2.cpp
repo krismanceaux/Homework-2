@@ -10,18 +10,12 @@
 
 using namespace std;
 
-void readNamesCredits(ifstream& infile, string& firstName, string& lastName, string& credits);
-void readMajor(ifstream& infile, string& major);
-void readCredits(ifstream& infile, string& credits);
-void readID(ifstream& infile, string& id);
-void readNames(ifstream& infile, string& firstName, string& lastName);
-void readGPA(ifstream& infile, string& gpa);
-void readMajorVariables(string& major, ifstream& infile);
 void readFile(ifstream & infilename, ofstream& outfilename, OrderedLinkedList<nodeType<string>>& olList);
 void readVariables(ifstream & infilename, string& idNum, string& firstName, string& lastName, string& major, string& gpa, string& credits, int b1, int b2, int b3, int b4, int b5, int b6);
 int charCount(string& str);
 bool checkGPA(string& GPA2);
 bool checkCredits(string& credits);
+bool checkMajor(string& major);
 
 int main(int argc, char* argv[])
 {
@@ -70,27 +64,27 @@ void readFile(ifstream & infile, ofstream & outfile, OrderedLinkedList<nodeType<
 		else if (line == "PRINT_ROSTER")
 		{
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 1, 2, 3, 4, 5, 6);
-			olList.PRINT_ROSTER(outfile);
+			olList.PRINT_ROSTER(outfile, infile);
 		}
 
 		else if (line == "PRINT_BY_MAJOR")
 		{
-			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 1, 2, 3, 4, 5, 6);
-			olList.PRINT_BY_MAJOR(major, outfile);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 0, 0, 4, 0, 0);
+			olList.PRINT_BY_MAJOR(major, outfile, infile);
 		}
 			
 
 		else if (line == "PRINT_BY_GPA") {
 			//call read variables
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 0, 0, 0, 5, 0);
-			olList.PRINT_BY_GPA(gpa, outfile);
+			olList.PRINT_BY_GPA(gpa, outfile, infile);
 		}
 
 
 		else if (line == "PRINT_STUDENT") {
 			//call readVariables
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 2, 3, 0, 0, 0);
-			olList.PRINT_STUDENT(firstName, lastName, outfile);
+			olList.PRINT_STUDENT(firstName, lastName, outfile, infile);
 		}
 		else if (line == "DELETE_STUDENT") {
 			//call readVariables
@@ -133,7 +127,6 @@ void readFile(ifstream & infile, ofstream & outfile, OrderedLinkedList<nodeType<
 
 void readVariables(ifstream & infile, string& idNum, string& firstName, string& lastName, string& major, string& gpa, string& credits, int b1, int b2, int b3, int b4, int b5, int b6)
 {
-	int count{ 0 };
 	//while there are lines to be read
 	while (infile.good())
 	{
@@ -146,14 +139,19 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		{
 			
 			try {
-				ss >> idNum;
+				if (line2 == "")
+					throw Exception(line2);
 				if (charCount(line2) != 5)
 					throw(idNum);
-				
+				ss >> idNum;
 			}catch(const string e)
 			{
 				idNum = "0";
 				cout << "Your ID: " << e << " is the incorrect number of digits. It must be 5 digits long" << endl;
+			}catch(Exception e)
+			{
+				idNum = "0";
+				cout << e.argMissing() << endl;
 			}
 			b1 -= 1;
 		}
@@ -169,13 +167,27 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		}
 		else if (b4 == 4)
 		{
-			ss >> major;
+			try {
+				if (!checkMajor(major))
+					throw major;
+				if (line2 == "")
+					throw Exception(line2);
+				ss >> major;
+			}catch(Exception e){
+				major = "";
+				cout << e.argMissing() << endl;
+			}catch(string e)
+			{
+				major = "";
+			}
 			b4 -= 4;
 		}
 		else if (b5 == 5)
 		{
 			try
 			{
+				if (line2 == "")
+					throw Exception(line2);
 				if (!checkGPA(line2))
 					throw line2;
 				ss >> gpa;
@@ -185,6 +197,10 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 			{
 				gpa = "0.00";
 				cout << "Your GPA: " << e << " is in the incorrect GPA format. Example: 3.58 or 0.00. It must be a number in between 0.00 and 4.00" << endl;
+			}catch(Exception e)
+			{
+				gpa = "0";
+				cout << e.argMissing() << endl;
 			}
 			b5 -= 5;
 		}
@@ -210,7 +226,6 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 
 			b6 -= 6;
 		}
-		count++;
 		
 		//if line is blank - BREAK
 		if(line2 == "")
@@ -266,6 +281,21 @@ bool checkCredits(string& credits)
 	if(cr < 0 || cr > 15)
 	{
 		flag = false;
+	}
+	return flag;
+}
+
+bool checkMajor(string & major)
+{
+	bool flag = true;
+	for(char i : major)
+	{
+		if(i <65 || i > 90 && i < 97 || i > 122)
+		{
+			flag = false;
+		}
+		else 
+			flag = true;
 	}
 	return flag;
 }

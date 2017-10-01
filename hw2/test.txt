@@ -3,8 +3,6 @@ INSERT
 Anne
 Hathaway
 English
-4.00
-12
 
 INSERT
 11293
@@ -18,22 +16,8 @@ INSERT
 11556
 Dan
 Aykroyd
-Music
-3.20
 12
-
-ADD_CLASS
-Dan
-Aykroyd
 
 PRINT_STUDENT
 Dan
 Aykroyd
-
-UPDATE_MAJOR
-John
-Belushi
-English
-
-PRINT_BY_MAJOR
-English
