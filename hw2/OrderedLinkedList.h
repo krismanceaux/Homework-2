@@ -76,7 +76,8 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 			node->next = reader;
 			node->previous = reader->previous;
 			reader->previous = node;
-			//If the node we are inserting in front of is the first item in the list, point first to the new node to avoid losing the new nodes
+			//If the node we are inserting in front of is the first item in the list, point first to the new node to 
+			//avoid losing the new nodes
 			if(this->first == reader)
 			{
 				this->first = node;
