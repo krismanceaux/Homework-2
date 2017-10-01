@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArgumentManager.h" />
+    <ClInclude Include="Exception.h" />
     <ClInclude Include="linkedListIterator.h" />
     <ClInclude Include="linkedListType.h" />
     <ClInclude Include="nodeType.h" />

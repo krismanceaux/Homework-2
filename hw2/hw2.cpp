@@ -6,6 +6,7 @@
 #include <fstream>
 #include "ArgumentManager.h"
 #include "OrderedLinkedList.h"
+#include "Exception.h"
 
 using namespace std;
 
@@ -190,14 +191,21 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		else if (b6 == 6)
 		{
 			try {
-				//TODO: CREDITS GET MIXED UP VIA PASSING BY REFERENCE AND FAILS EST CASE 3. FIX LATER. 
+				if (line2 == "")
+					throw Exception(line2);
 				if (!checkCredits(line2))
 					throw line2;
+				
 				ss >> credits;
 			}catch(string e)
 			{
 				credits = "0";
 				cout << "Your credits: " << e << " is in the wrong format. It must be a whole number between 0 and 15." << endl;
+			}catch(Exception e)
+			{
+				credits = "0";
+				cout << e.argMissing() << endl;
+				break;
 			}
 
 			b6 -= 6;

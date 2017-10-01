@@ -10,9 +10,6 @@
 // We cannot instantiate an object of this class.
 //***********************************************************
 
-
-
-
 template <class Type>
 class linkedListType
 {
@@ -99,7 +96,6 @@ public:
 	//Postcondition: The list object is destroyed.
 protected:
 	int count; //variable to store the number of list elements
-			   //
 	nodeType<string> *first; //pointer to the first node of the list
 	nodeType<string> *last; //pointer to the last node of the list
 private:
