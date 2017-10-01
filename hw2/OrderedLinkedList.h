@@ -47,17 +47,42 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 {
 	nodeType<string> * node = new nodeType<string>
 		(nullptr, nullptr, idNum, firstName, lastName, major, gpa, credits);
+	//if the file is empty just insert the node
 	if (this->isEmptyList()) {
 		node->next = this->last;
 		node->previous = this->first;
 		this->first = node;
 		this->last = node;
 	}
+	//if the file is not empty, walk through the list to find the alphabetical position to insert the node.
 	else if (!this->isEmptyList()){
-		node->next = nullptr;
-		node->previous = this->last;
-		this->last->next = node;
-		this->last = node;
+		nodeType<string>* reader = this->first;
+		//while the reader does not hit null and the current node's last name comes before the passed-in last name alphabetically
+		while (reader && lastName >= reader->lastName)
+		{
+			reader = reader->next;
+		}
+		//If we've made it to the very end of the list
+		if(reader == nullptr)
+		{
+			node->next = nullptr;
+			node->previous = this->last;
+			this->last->next = node;
+			this->last = node;
+		}
+		//Insert in front of the node that reader stopped on
+		else
+		{
+			node->next = reader;
+			node->previous = reader->previous;
+			reader->previous = node;
+			//If the node we are inserting in front of is the first item in the list, point first to the new node to avoid losing the new nodes
+			if(this->first == reader)
+			{
+				this->first = node;
+			}
+		}
+		
 	}
 }
 
@@ -76,6 +101,8 @@ void OrderedLinkedList<Type>::insertLast(const Type& newItem)
 template <class Type>
 bool OrderedLinkedList<Type>::search(const Type& searchItem) const
 {
+	
+
 	return true;
 }
 
@@ -90,12 +117,11 @@ void OrderedLinkedList<Type>::deleteNode(const Type& deleteItem)
 template<class Type>
 void OrderedLinkedList<Type>::PRINT_ROSTER() const
 {
+
 	nodeType<string>* reader = this->first;
 	while(reader)
 	{
-		cout << reader->idNum << endl << reader->firstName << endl 
-		<< reader->lastName << endl << reader->major << endl << reader->gpa << 
-			endl << reader->credits << endl << endl;
+		cout << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl;
 		reader = reader->next;
 	}
 }

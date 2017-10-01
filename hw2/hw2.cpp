@@ -17,10 +17,6 @@ bool checkCredits(string& credits);
 
 int main(int argc, char* argv[])
 {
-
-
-
-
 	ArgumentManager am(argc, argv);
 	const string infilename = am.get("A");
 	const string outfilename = am.get("C");
@@ -29,10 +25,12 @@ int main(int argc, char* argv[])
 	OrderedLinkedList<nodeType<string>> olList{};
 
 	readFile(infile, olList);
+	infile.close();
+
 	olList.PRINT_ROSTER();
 
 
-	infile.close();
+	
 
 }
 
@@ -173,7 +171,15 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		}
 		else if (count == 5)
 		{
-			ss >> credits;
+			try {
+				if (!checkCredits(line2))
+					throw line2;
+				ss >> credits;
+			}catch(string e)
+			{
+				credits = "0";
+				cout << "Your credits: " << e << " is in the wrong format. It must be a whole number between 0 and 15." << endl;
+			}
 		}
 		count++;
 		
@@ -225,6 +231,12 @@ bool checkGPA(string& GPA2)
 
 bool checkCredits(string& credits)
 {
-	//bool flag{ true };
+	bool flag{ true };
+	int cr = stoi(credits);
 	
+	if(cr < 0 || cr > 15)
+	{
+		flag = false;
+	}
+	return flag;
 }
