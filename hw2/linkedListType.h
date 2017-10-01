@@ -100,8 +100,8 @@ public:
 protected:
 	int count; //variable to store the number of list elements
 			   //
-	nodeType<int, string, double> *first; //pointer to the first node of the list
-	nodeType<int, string, double> *last; //pointer to the last node of the list
+	nodeType<string> *first; //pointer to the first node of the list
+	nodeType<string> *last; //pointer to the last node of the list
 private:
 	void copyList(const linkedListType<Type>& otherList);
 	//Function to make a copy of otherList.
@@ -126,7 +126,7 @@ linkedListType<Type>::linkedListType() //default constructor
 template <class Type>
 void linkedListType<Type>::destroyList()
 {
-	nodeType<int, string, double> *temp; //pointer to deallocate the memory
+	nodeType<string> *temp; //pointer to deallocate the memory
 						  //occupied by the node
 	while (first != NULL) //while there are nodes in the list
 	{
@@ -148,7 +148,7 @@ void linkedListType<Type>::initializeList()
 template <class Type>
 void linkedListType<Type>::print() const
 {
-	nodeType<int, string, double> *current; //pointer to traverse the list
+	nodeType<string> *current; //pointer to traverse the list
 	current = first; //set current point to the first node
 	while (current != NULL) //while more data to print
 	{
@@ -194,8 +194,8 @@ template <class Type>
 void linkedListType<Type>::copyList
 (const linkedListType<Type>& otherList)
 {
-	nodeType<int, string, double> *newNode; //pointer to create a node
-	nodeType<int, string, double> *current; //pointer to traverse the list
+	nodeType<string> *newNode; //pointer to create a node
+	nodeType<string> *current; //pointer to traverse the list
 	if (first != NULL) //if the list is nonempty, make it empty
 		destroyList();
 	if (otherList.first == NULL) //otherList is empty
@@ -210,7 +210,7 @@ void linkedListType<Type>::copyList
 								   //list to be copied
 		count = otherList.count;
 		//copy the first node
-		first = new nodeType<int, string, double>; //create the node
+		first = new nodeType<string>; //create the node
 		first->info = current->info; //copy the info
 		first->next = NULL; //set the next field of the node to NULL
 		last = first; //make last point to the first node
@@ -219,7 +219,7 @@ void linkedListType<Type>::copyList
 								 //copy the remaining list
 		while (current != NULL)
 		{
-			newNode = new nodeType<int, string, double>; //create a node
+			newNode = new nodeType<string>; //create a node
 			newNode->info = current->info; //copy the info
 			newNode->next = NULL; //set the next of newNode to NULL
 			last->next = newNode; //attach newNode after last

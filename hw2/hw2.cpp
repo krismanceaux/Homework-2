@@ -9,9 +9,11 @@
 
 using namespace std;
 
-void readFile(ifstream & infilename, OrderedLinkedList<nodeType<int, string, double>>& olList);
-void readVariables(ifstream & infilename, int& idNum, string& firstName, string& lastName, string& major, double& gpa, int& credits);
-
+void readFile(ifstream & infilename, OrderedLinkedList<nodeType<string>>& olList);
+void readVariables(ifstream & infilename, string& idNum, string& firstName, string& lastName, string& major, string& gpa, string& credits);
+int charCount(string& str);
+bool checkGPA(string& GPA2);
+bool checkCredits(string& credits);
 
 int main(int argc, char* argv[])
 {
@@ -24,7 +26,7 @@ int main(int argc, char* argv[])
 	const string outfilename = am.get("C");
 	
 	ifstream infile{ infilename };
-	OrderedLinkedList<nodeType<int, string, double>> olList{};
+	OrderedLinkedList<nodeType<string>> olList{};
 
 	readFile(infile, olList);
 	olList.PRINT_ROSTER();
@@ -36,15 +38,15 @@ int main(int argc, char* argv[])
 
 
 
-void readFile(ifstream & infile, OrderedLinkedList<nodeType<int, string, double>>& olList)
+void readFile(ifstream & infile, OrderedLinkedList<nodeType<string>>& olList)
 {
 	string line{ "" };
-	int idNum{ 0 };
+	string idNum{ "0" };
 	string firstName{ "" };
 	string lastName{ "" };
 	string major{ "" };
-	double gpa{ 0 };
-	int credits{ 0 };
+	string gpa{ "0.0" };
+	string credits{ "0" };
 
 	//while there are lines to be read
 	while (infile.good())
@@ -116,9 +118,9 @@ void readFile(ifstream & infile, OrderedLinkedList<nodeType<int, string, double>
 
 }
 
-void readVariables(ifstream & infile, int& idNum, string& firstName, string& lastName, string& major, double& gpa, int& credits)
+void readVariables(ifstream & infile, string& idNum, string& firstName, string& lastName, string& major, string& gpa, string& credits)
 {
-	
+	double gpa3;
 	int count{ 0 };
 	//while there are lines to be read
 	while (infile.good())
@@ -130,7 +132,17 @@ void readVariables(ifstream & infile, int& idNum, string& firstName, string& las
 		//store variables locally
 		if(count == 0)
 		{
-			ss >> idNum;
+			
+			try {
+				ss >> idNum;
+				if (charCount(line2) != 5)
+					throw(idNum);
+				
+			}catch(const string e)
+			{
+				idNum = "0";
+				cout << "Your ID: " << e << " is the incorrect number of digits. It must be 5 digits long" << endl;
+			}
 		}
 		else if (count == 1)
 		{
@@ -146,7 +158,18 @@ void readVariables(ifstream & infile, int& idNum, string& firstName, string& las
 		}
 		else if (count == 4)
 		{
-			ss >> gpa;
+			try
+			{
+				if (!checkGPA(line2))
+					throw line2;
+				ss >> gpa;
+				
+			}
+			catch (string e)
+			{
+				gpa = "0.00";
+				cout << "Your GPA: " << e << " is in the incorrect GPA format. Example: 3.58 or 0.00. It must be a number in between 0.00 and 4.00" << endl;
+			}
 		}
 		else if (count == 5)
 		{
@@ -163,4 +186,45 @@ void readVariables(ifstream & infile, int& idNum, string& firstName, string& las
 		ss.str("");
 		ss.clear(); 
 	}
+}
+
+int charCount(string& str)
+{
+	int count{ 0 };
+	for(char i : str)
+	{
+		count++;
+	}
+	return count;
+}
+
+bool checkGPA(string& GPA2)
+{
+	double gpaNum = stod(GPA2);
+
+	bool flag{ true };
+	int count{ 0 };
+	for(char i : GPA2)
+	{
+		if(i < 48 && i != 46 || i > 57)
+		{
+			flag = false;
+		}
+		count++;
+	}
+	if(GPA2[1] != '.')
+	{
+		flag = false;
+	}
+	if(gpaNum < 0.0 || gpaNum > 4.0)
+	{
+		flag = false;
+	}
+	return flag;
+}
+
+bool checkCredits(string& credits)
+{
+	//bool flag{ true };
+	
 }

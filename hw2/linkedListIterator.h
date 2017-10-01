@@ -14,7 +14,7 @@ public:
 	linkedListIterator();
 	//Default constructor
 	//Postcondition: current = NULL;
-	linkedListIterator(nodeType<int, string, double> *ptr);
+	linkedListIterator(nodeType<string> *ptr);
 	//Constructor with a parameter.
 	//Postcondition: current = ptr;
 	Type operator*();
@@ -34,7 +34,7 @@ public:
 	// the iterator specified by right, otherwise it returns
 	// false.
 private:
-	nodeType<int, string, double> *current; //pointer to point to the current
+	nodeType<string> *current; //pointer to point to the current
 							 //node in the linked list
 };
 
@@ -44,7 +44,7 @@ linkedListIterator<Type>::linkedListIterator()
 	current = NULL;
 }
 template <class Type>
-linkedListIterator<Type>::linkedListIterator(nodeType<int, string, double> *ptr)
+linkedListIterator<Type>::linkedListIterator(nodeType<string> *ptr)
 {
 	current = ptr;
 }
