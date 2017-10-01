@@ -7,9 +7,9 @@ Physics
 12
 
 INSERT
-03491
+034
 Joe
 Flacco
 Chemistry
-3.91
+4.01
 12

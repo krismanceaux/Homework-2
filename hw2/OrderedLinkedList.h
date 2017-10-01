@@ -13,9 +13,9 @@ class OrderedLinkedList : public linkedListType<Type>
 public:
 	OrderedLinkedList<Type>();
 
-	void INSERT(nodeType<int, string, double>* next,
-		nodeType<int, string, double>* previous, int idNum, string firstName,
-		string lastName, string major, double gpa, int credits);
+	void INSERT(nodeType<string>* next,
+		nodeType<string>* previous, string idNum, string firstName,
+		string lastName, string major, string gpa, string credits);
 	void insertFirst(const Type& newItem);
 	void insertLast(const Type& newItem);
 	bool search(const Type& searchItem) const;
@@ -41,11 +41,11 @@ OrderedLinkedList<Type>::OrderedLinkedList() : linkedListType()
 
 
 template<class Type>
-void OrderedLinkedList<Type>::INSERT(nodeType<int, string, double>* next,
-	nodeType<int, string, double>* previous, int idNum, string firstName,
-	string lastName, string major, double gpa, int credits)
+void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
+	nodeType<string>* previous, string idNum, string firstName,
+	string lastName, string major, string gpa, string credits)
 {
-	nodeType<int, string, double> * node = new nodeType<int, string, double>
+	nodeType<string> * node = new nodeType<string>
 		(nullptr, nullptr, idNum, firstName, lastName, major, gpa, credits);
 	if (this->isEmptyList()) {
 		node->next = this->last;
@@ -90,7 +90,7 @@ void OrderedLinkedList<Type>::deleteNode(const Type& deleteItem)
 template<class Type>
 void OrderedLinkedList<Type>::PRINT_ROSTER() const
 {
-	nodeType<int, string, double>* reader = first;
+	nodeType<string>* reader = this->first;
 	while(reader)
 	{
 		cout << reader->idNum << endl << reader->firstName << endl 
