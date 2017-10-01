@@ -9,6 +9,7 @@
 
 using namespace std;
 
+void readNamesCredits(ifstream& infile, string& firstName, string& lastName, string& credits);
 void readMajor(ifstream& infile, string& major);
 void readCredits(ifstream& infile, string& credits);
 void readID(ifstream& infile, string& id);
@@ -16,7 +17,7 @@ void readNames(ifstream& infile, string& firstName, string& lastName);
 void readGPA(ifstream& infile, string& gpa);
 void readMajorVariables(string& major, ifstream& infile);
 void readFile(ifstream & infilename, ofstream& outfilename, OrderedLinkedList<nodeType<string>>& olList);
-void readVariables(ifstream & infilename, string& idNum, string& firstName, string& lastName, string& major, string& gpa, string& credits);
+void readVariables(ifstream & infilename, string& idNum, string& firstName, string& lastName, string& major, string& gpa, string& credits, int b1, int b2, int b3, int b4, int b5, int b6);
 int charCount(string& str);
 bool checkGPA(string& GPA2);
 bool checkCredits(string& credits);
@@ -61,69 +62,65 @@ void readFile(ifstream & infile, ofstream & outfile, OrderedLinkedList<nodeType<
 		//if line is INSERT
 		if (line == "INSERT") {
 			//call readVariables
-			readVariables(infile, idNum, firstName, lastName, major, gpa, credits);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 1, 2, 3, 4, 5, 6);
 			
 			olList.INSERT(nullptr, nullptr, idNum, firstName, lastName, major, gpa, credits);
 		}
 		else if (line == "PRINT_ROSTER")
 		{
-			readVariables(infile, idNum, firstName, lastName, major, gpa, credits);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 1, 2, 3, 4, 5, 6);
 			olList.PRINT_ROSTER(outfile);
 		}
 
 		else if (line == "PRINT_BY_MAJOR")
 		{
-			readVariables(infile, idNum, firstName, lastName, major, gpa, credits);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 1, 2, 3, 4, 5, 6);
 			olList.PRINT_BY_MAJOR(major, outfile);
 		}
 			
 
 		else if (line == "PRINT_BY_GPA") {
 			//call read variables
-			readGPA(infile, gpa);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 0, 0, 0, 5, 0);
 			olList.PRINT_BY_GPA(gpa, outfile);
 		}
 
 
 		else if (line == "PRINT_STUDENT") {
 			//call readVariables
-			readNames(infile, firstName, lastName);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 2, 3, 0, 0, 0);
 			olList.PRINT_STUDENT(firstName, lastName, outfile);
 		}
 		else if (line == "DELETE_STUDENT") {
 			//call readVariables
-			readNames(infile, firstName, lastName);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 2, 3, 0, 0, 0);
 			olList.DELETE_STUDENT(firstName, lastName);
 		}
 		else if (line == "DELETE_ID") {
 			//call readVariables
-			readID(infile, idNum);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 1, 0, 0, 0, 0, 0);
 			olList.DELETE_ID(idNum);
 		}
 
 		else if (line == "UPDATE_GPA") {
 			//call readVariables
-			readNames(infile, firstName, lastName);
-			readGPA(infile, gpa);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 2, 3, 0, 5, 0);
 			olList.UPDATE_GPA(firstName, lastName, gpa);
 		}
 		else if (line == "UPDATE_MAJOR") {
 			//call readVariables
-			readNames(infile, firstName, lastName);
-			readMajor(infile, major);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 2, 3, 4, 0, 0);
 			olList.UPDATE_MAJOR(firstName, lastName, major);
 		}
 		else if (line == "ADD_CLASS") {
 			//call readVariables
-			readNames(infile, firstName, lastName);
-			readCredits(infile, credits);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 2, 3, 0, 0, 6);
 			olList.ADD_CLASS(firstName, lastName, credits);
 		}
 		else if (line == "REMOVE_CLASS")
 		{
 			//call readVariables
-			readNames(infile, firstName, lastName);
-			readCredits(infile, credits);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 2, 3, 0, 0, 6);
 			olList.REMOVE_CLASS(firstName, lastName, credits);
 		}
 		else if (line == "GPA") {
@@ -133,7 +130,7 @@ void readFile(ifstream & infile, ofstream & outfile, OrderedLinkedList<nodeType<
 
 }
 
-void readVariables(ifstream & infile, string& idNum, string& firstName, string& lastName, string& major, string& gpa, string& credits)
+void readVariables(ifstream & infile, string& idNum, string& firstName, string& lastName, string& major, string& gpa, string& credits, int b1, int b2, int b3, int b4, int b5, int b6)
 {
 	int count{ 0 };
 	//while there are lines to be read
@@ -144,7 +141,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		getline(infile, line2);
 		stringstream ss(line2);
 		//store variables locally
-		if(count == 0)
+		if(b1 == 1)
 		{
 			
 			try {
@@ -157,20 +154,24 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 				idNum = "0";
 				cout << "Your ID: " << e << " is the incorrect number of digits. It must be 5 digits long" << endl;
 			}
+			b1 -= 1;
 		}
-		else if (count == 1)
+		else if (b2 == 2)
 		{
 			ss >> firstName;;
+			b2 -= 2;
 		}
-		else if (count == 2)
+		else if (b3 == 3)
 		{
 			ss >> lastName;
+			b3 -= 3;
 		}
-		else if (count == 3)
+		else if (b4 == 4)
 		{
 			ss >> major;
+			b4 -= 4;
 		}
-		else if (count == 4)
+		else if (b5 == 5)
 		{
 			try
 			{
@@ -184,10 +185,12 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 				gpa = "0.00";
 				cout << "Your GPA: " << e << " is in the incorrect GPA format. Example: 3.58 or 0.00. It must be a number in between 0.00 and 4.00" << endl;
 			}
+			b5 -= 5;
 		}
-		else if (count == 5)
+		else if (b6 == 6)
 		{
 			try {
+				//TODO: CREDITS GET MIXED UP VIA PASSING BY REFERENCE AND FAILS EST CASE 3. FIX LATER. 
 				if (!checkCredits(line2))
 					throw line2;
 				ss >> credits;
@@ -196,6 +199,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 				credits = "0";
 				cout << "Your credits: " << e << " is in the wrong format. It must be a whole number between 0 and 15." << endl;
 			}
+			b6 -= 6;
 		}
 		count++;
 		
@@ -257,161 +261,3 @@ bool checkCredits(string& credits)
 	return flag;
 }
 
-void readMajorVariables(string& major, ifstream& infile)
-{
-	int count{ 0 };
-	//while there are lines to be read
-	while (infile.good())
-	{
-
-		string line2;
-		getline(infile, line2);
-		stringstream ss(line2);
-		//store variables locally
-		if (count == 0) {
-			ss >> major;
-		}
-		count++;
-
-		//if line is blank - BREAK
-		if (line2 == "")
-		{
-			break;
-		}
-
-		ss.str("");
-		ss.clear();
-	}
-}
-
-void readNames(ifstream& infile, string& firstName, string& lastName)
-{
-	int count{ 0 };
-	//while there are lines to be read
-	while (infile.good())
-	{
-		string line2;
-		getline(infile, line2);
-		stringstream ss(line2);
-		//store variables locally
-		if (count == 0) {
-			ss >> firstName;
-		}
-		else if(count == 1)
-		{
-			ss >> lastName;
-		}
-		count++;
-
-		//if line is blank - BREAK
-		if (line2 == "")
-		{
-			break;
-		}
-
-		ss.str("");
-		ss.clear();
-	}
-
-}
-
-void readGPA(ifstream& infile, string& gpa)
-{
-	int count{ 0 };
-	//while there are lines to be read
-	while (infile.good())
-	{
-		string line2;
-		getline(infile, line2);
-		stringstream ss(line2);
-		//store variables locally
-		if (count == 0) {
-			ss >> gpa;
-		}
-		count++;
-
-		//if line is blank - BREAK
-		if (line2 == "")
-		{
-			break;
-		}
-
-		ss.str("");
-		ss.clear();
-	}
-}
-void readID(ifstream& infile, string& id)
-{
-	int count{ 0 };
-	//while there are lines to be read
-	while (infile.good())
-	{
-		string line2;
-		getline(infile, line2);
-		stringstream ss(line2);
-		//store variables locally
-		if (count == 0) {
-			ss >> id;
-		}
-		count++;
-
-		//if line is blank - BREAK
-		if (line2 == "")
-		{
-			break;
-		}
-
-		ss.str("");
-		ss.clear();
-	}
-}
-void readCredits(ifstream& infile, string& credits)
-{
-	int count{ 0 };
-	//while there are lines to be read
-	while (infile.good())
-	{
-		string line2;
-		getline(infile, line2);
-		stringstream ss(line2);
-		//store variables locally
-		if (count == 0) {
-			ss >> credits;
-		}
-		count++;
-
-		//if line is blank - BREAK
-		if (line2 == "")
-		{
-			break;
-		}
-
-		ss.str("");
-		ss.clear();
-	}
-}
-void readMajor(ifstream& infile, string& major)
-{
-	int count{ 0 };
-	//while there are lines to be read
-	while (infile.good())
-	{
-		string line2;
-		getline(infile, line2);
-		stringstream ss(line2);
-		//store variables locally
-		if (count == 0) {
-			ss >> major;
-		}
-		count++;
-
-		//if line is blank - BREAK
-		if (line2 == "")
-		{
-			break;
-		}
-
-		ss.str("");
-		ss.clear();
-	}
-}

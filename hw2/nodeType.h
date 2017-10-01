@@ -12,6 +12,9 @@ struct nodeType
 	Type major= "";
 	Type gpa = 0;
 	Type credits = 0;
+	Type info = "";
+	Type* link = nullptr;
+	Type gnu_dev_major = "";
 
 	nodeType<Type>() : idNum(0), firstName(""), lastName(""), major(""), gpa(0.0), credits(0){}
 

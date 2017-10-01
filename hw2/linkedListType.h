@@ -166,14 +166,14 @@ int linkedListType<Type>::length() const
 template <class Type>
 Type linkedListType<Type>::front() const
 {
-	assert(first != NULL);
+	///assert(first != NULL);
 	return first->info; //return the info of the first node
 }//end front
 
 template <class Type>
 Type linkedListType<Type>::back() const
 {
-	assert(last != NULL);
+	//assert(last != NULL);
 	return last->info; //return the info of the last node
 }//end back
 

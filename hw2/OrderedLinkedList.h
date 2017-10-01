@@ -4,6 +4,8 @@
 #include "nodeType.h"
 #include "linkedListType.h"
 #include <iostream>
+#include <iomanip>
+
 using namespace std;
 
 template<class Type>
@@ -35,8 +37,9 @@ public:
 };
 
 template <class Type>
-OrderedLinkedList<Type>::OrderedLinkedList() : linkedListType()
+OrderedLinkedList<Type>::OrderedLinkedList()
 {
+	
 	this->count = 0;
 }
 
@@ -194,10 +197,11 @@ void OrderedLinkedList<Type>::PRINT_BY_MAJOR(string& major, ofstream& outfile)
 	{
 		if(reader->major == major)
 		{
-			outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl << endl;
+			outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl;
 		}
 		reader = reader->next;
 	}
+	outfile << endl;
 }
 
 template<class Type>
@@ -210,10 +214,11 @@ void OrderedLinkedList<Type>::PRINT_BY_GPA(string& gpa, ofstream& outfile)
 		double GPA2 = stod(reader->gpa);
 		if(GPA2 >= GPA1)
 		{
-			outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl << endl;
+			outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl;
 		}
 		reader = reader->next;
 	}
+	outfile << endl;
 }
 
 template <class Type>
@@ -340,5 +345,5 @@ void OrderedLinkedList<Type>::GPA(ofstream& outfile)
 	}
 	const double mean = total / count;
 
-	outfile << "GPA mean: " << mean << endl;
+	outfile << setprecision(3) << "GPA mean: " << mean << setprecision(6) << endl << endl;
 }
