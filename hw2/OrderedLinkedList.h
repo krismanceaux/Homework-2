@@ -183,6 +183,7 @@ void OrderedLinkedList<Type>::PRINT_ROSTER(ofstream& outfile) const
 		outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl;
 		reader = reader->next;
 	}
+	outfile << endl;
 }
 
 template<class Type>
@@ -193,7 +194,7 @@ void OrderedLinkedList<Type>::PRINT_BY_MAJOR(string& major, ofstream& outfile)
 	{
 		if(reader->major == major)
 		{
-			outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl;
+			outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl << endl;
 		}
 		reader = reader->next;
 	}
@@ -209,7 +210,7 @@ void OrderedLinkedList<Type>::PRINT_BY_GPA(string& gpa, ofstream& outfile)
 		double GPA2 = stod(reader->gpa);
 		if(GPA2 >= GPA1)
 		{
-			outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl;
+			outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl << endl;
 		}
 		reader = reader->next;
 	}
@@ -225,7 +226,7 @@ void OrderedLinkedList<Type>::PRINT_STUDENT(string& firstName, string& lastName,
 	}
 
 	outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl
-		<< "Major: " << reader->major << endl << " GPA: " << reader->gpa << endl << "Credits Enrolled: " << reader->credits << endl;
+		<< "Major: " << reader->major << endl << "GPA: " << reader->gpa << endl << "Credits Enrolled: " << reader->credits << endl << endl;
 }
 
 template<class Type>
