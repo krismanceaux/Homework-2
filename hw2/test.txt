@@ -1,4 +1,12 @@
 INSERT
+02999
+Colin
+Firth
+Theater and dance
+4.00
+9
+
+INSERT
 03827
 Anne
 Hathaway
@@ -6,45 +14,20 @@ English
 4.00
 12
 
-INSERT
-11293
-John
-Belushi
-Music
-2.50
-6
+PRINT_ROSTER
 
 INSERT
-13928
-Kit
-Harrington
-Geology
-3.75
+01972
+Jack
+Nicholson
+Math
+2.90
 9
 
-INSERT
-11556
-Dan
-Aykroyd
-Music
-3.20
-12
+GPA
 
-PRINT_BY_MAJOR
-Music
+DELETE_STUDENT
+Colin
+Firth
 
-PRINT_BY_GPA
-3.00
-
-REMOVE_CLASS
-Dan
-Aykroyd
-3
-
-PRINT_STUDENT
-Dan
-Aykroyd
-
-
-
-
+PRINT_ROSTER

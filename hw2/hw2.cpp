@@ -55,12 +55,11 @@ void readFile(ifstream & infile, ofstream & outfile, OrderedLinkedList<nodeType<
 		if (line == "INSERT") {
 			//call readVariables
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 1, 2, 3, 4, 5, 6);
-			
 			olList.INSERT(nullptr, nullptr, idNum, firstName, lastName, major, gpa, credits);
 		}
 		else if (line == "PRINT_ROSTER")
 		{
-			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 1, 2, 3, 4, 5, 6);
+			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 0, 0, 0, 0, 0);
 			olList.PRINT_ROSTER(outfile, infile);
 		}
 
