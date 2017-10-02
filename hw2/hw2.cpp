@@ -26,14 +26,11 @@ int main(int argc, char* argv[])
 	ifstream infile{ infilename };
 	OrderedLinkedList<nodeType<string>> olList{};
 	ofstream outfile(outfilename);
+
+	//Inside readFile is where we call the functions and get their arguments as we are reading the file
 	readFile(infile, outfile, olList);
 	infile.close();
-
-	//olList.PRINT_ROSTER(outfile);
-
-
-	
-
+	outfile.close();
 }
 
 
