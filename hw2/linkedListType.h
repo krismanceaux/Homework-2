@@ -206,7 +206,7 @@ void linkedListType<Type>::copyList
 								   //list to be copied
 		count = otherList.count;
 		//copy the first node
-		first = new nodeType<string>; //create the node
+		first = new nodeType<string>(); //create the node
 		first->info = current->info; //copy the info
 		first->next = NULL; //set the next field of the node to NULL
 		last = first; //make last point to the first node
@@ -215,7 +215,7 @@ void linkedListType<Type>::copyList
 								 //copy the remaining list
 		while (current != NULL)
 		{
-			newNode = new nodeType<string>; //create a node
+			newNode = new nodeType<string>(); //create a node
 			newNode->info = current->info; //copy the info
 			newNode->next = NULL; //set the next of newNode to NULL
 			last->next = newNode; //attach newNode after last

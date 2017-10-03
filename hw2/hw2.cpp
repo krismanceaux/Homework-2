@@ -2,7 +2,6 @@
 //
 
 #include <string>
-#include <sstream>
 #include <fstream>
 #include "ArgumentManager.h"
 #include "OrderedLinkedList.h"
@@ -22,7 +21,7 @@ int main(int argc, char* argv[])
 	ArgumentManager am(argc, argv);
 	const string infilename = am.get("A");
 	const string outfilename = am.get("C");
-	
+
 	ifstream infile{ infilename };
 	OrderedLinkedList<nodeType<string>> olList{};
 	ofstream outfile(outfilename);
@@ -68,7 +67,7 @@ void readFile(ifstream & infile, ofstream & outfile, OrderedLinkedList<nodeType<
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 0, 0, 4, 0, 0);
 			olList.PRINT_BY_MAJOR(major, outfile, infile);
 		}
-			
+
 
 		else if (line == "PRINT_BY_GPA") {
 			//call read variables
@@ -126,25 +125,25 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 	//while there are lines to be read
 	while (infile.good())
 	{
-	
 		string line2;
 		getline(infile, line2);
-		stringstream ss(line2);
 		//store variables locally
-		if(b1 == 1)
+		if (b1 == 1)
 		{
-			
+
 			try {
 				if (line2 == "")
 					throw Exception(line2);
 				if (charCount(line2) != 5)
 					throw(idNum);
-				ss >> idNum;
-			}catch(const string e)
+				idNum = line2;
+			}
+			catch (const string e)
 			{
 				idNum = "0";
 				cout << "Your ID: " << e << " is the incorrect number of digits. It must be 5 digits long" << endl;
-			}catch(Exception e)
+			}
+			catch (Exception e)
 			{
 				idNum = "0";
 				cout << e.argMissing() << endl;
@@ -153,12 +152,12 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		}
 		else if (b2 == 2)
 		{
-			ss >> firstName;;
+			firstName = line2;
 			b2 -= 2;
 		}
 		else if (b3 == 3)
 		{
-			ss >> lastName;
+			lastName = line2;
 			b3 -= 3;
 		}
 		else if (b4 == 4)
@@ -168,11 +167,13 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 					throw major;
 				if (line2 == "")
 					throw Exception(line2);
-				ss >> major;
-			}catch(Exception e){
+				major = line2;
+			}
+			catch (Exception e) {
 				major = "";
 				cout << e.argMissing() << endl;
-			}catch(string e)
+			}
+			catch (string e)
 			{
 				major = "";
 			}
@@ -186,14 +187,15 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 					throw Exception(line2);
 				if (!checkGPA(line2))
 					throw line2;
-				ss >> gpa;
-				
+				gpa = line2;
+
 			}
 			catch (string e)
 			{
 				gpa = "0.00";
 				cout << "Your GPA: " << e << " is in the incorrect GPA format. Example: 3.58 or 0.00. It must be a number in between 0.00 and 4.00" << endl;
-			}catch(Exception e)
+			}
+			catch (Exception e)
 			{
 				gpa = "0";
 				cout << e.argMissing() << endl;
@@ -207,13 +209,15 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 					throw Exception(line2);
 				if (!checkCredits(line2))
 					throw line2;
-				
-				ss >> credits;
-			}catch(string e)
+
+				credits = line2;
+			}
+			catch (string e)
 			{
 				credits = "0";
 				cout << "Your credits: " << e << " is in the wrong format. It must be a whole number between 0 and 15." << endl;
-			}catch(Exception e)
+			}
+			catch (Exception e)
 			{
 				credits = "0";
 				cout << e.argMissing() << endl;
@@ -222,22 +226,19 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 
 			b6 -= 6;
 		}
-		
+
 		//if line is blank - BREAK
-		if(line2 == "")
+		if (line2 == "")
 		{
 			break;
 		}
-
-		ss.str("");
-		ss.clear(); 
 	}
 }
 
 int charCount(string& str)
 {
 	int count{ 0 };
-	for(char i : str)
+	for (char i : str)
 	{
 		count++;
 	}
@@ -250,19 +251,19 @@ bool checkGPA(string& GPA2)
 
 	bool flag{ true };
 	int count{ 0 };
-	for(char i : GPA2)
+	for (char i : GPA2)
 	{
-		if(i < 48 && i != 46 || i > 57)
+		if (i < 48 && i != 46 || i > 57)
 		{
 			flag = false;
 		}
 		count++;
 	}
-	if(GPA2[1] != '.')
+	if (GPA2[1] != '.')
 	{
 		flag = false;
 	}
-	if(gpaNum < 0.0 || gpaNum > 4.0)
+	if (gpaNum < 0.0 || gpaNum > 4.0)
 	{
 		flag = false;
 	}
@@ -273,8 +274,8 @@ bool checkCredits(string& credits)
 {
 	bool flag{ true };
 	int cr = stoi(credits);
-	
-	if(cr < 0 || cr > 15)
+
+	if (cr < 0 || cr > 15)
 	{
 		flag = false;
 	}
@@ -284,13 +285,13 @@ bool checkCredits(string& credits)
 bool checkMajor(string & major)
 {
 	bool flag = true;
-	for(char i : major)
+	for (char i : major)
 	{
-		if(i <65 || i > 90 && i < 97 || i > 122)
+		if (i <65 || i > 90 && i < 97 || i > 122)
 		{
 			flag = false;
 		}
-		else 
+		else
 			flag = true;
 	}
 	return flag;

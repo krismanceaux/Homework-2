@@ -19,22 +19,23 @@ public:
 
 	void INSERT(nodeType<string>* next,
 		nodeType<string>* previous, string idNum, string firstName,
-		string lastName, string major, string gpa, string credits);
+		string lastName, string tmajor, string gpa, string credits);
 	void insertFirst(const Type& newItem);
 	void insertLast(const Type& newItem);
 	bool search(const Type& searchItem) const;
 	void deleteNode(const Type& deleteItem);
 	void PRINT_ROSTER(ofstream& outfile, ifstream& infile) const;
-	void PRINT_BY_MAJOR(string& major, ofstream& outfile, ifstream& infile);
-	void PRINT_BY_GPA(string& gpa, ofstream& outfile, ifstream& infile);
-	void PRINT_STUDENT(string& firstName, string& lastName, ofstream& outfile, ifstream& infile);
-	void DELETE_STUDENT(string& firstName, string& lastName);
-	void DELETE_ID(string& id);
-	void UPDATE_GPA(string& firstName, string& lastName, string& gpa);
-	void UPDATE_MAJOR(string& firstName, string& lastName, string& major);
-	void ADD_CLASS(string& firstName, string& lastName, string& credits);
-	void REMOVE_CLASS(string& firstName, string& lastName, string& credits);
+	void PRINT_BY_MAJOR(string tmajor, ofstream& outfile, ifstream& infile);
+	void PRINT_BY_GPA(string gpa, ofstream& outfile, ifstream& infile);
+	void PRINT_STUDENT(string firstName, string lastName, ofstream& outfile, ifstream& infile);
+	void DELETE_STUDENT(string firstName, string lastName);
+	void DELETE_ID(string id);
+	void UPDATE_GPA(string firstName, string lastName, string gpa);
+	void UPDATE_MAJOR(string firstName, string lastName, string tmajor);
+	void ADD_CLASS(string firstName, string lastName, string credits);
+	void REMOVE_CLASS(string firstName, string lastName, string credits);
 	void GPA(ofstream& outfile);
+	void pc();
 };
 
 template <class Type>
@@ -56,13 +57,13 @@ inline OrderedLinkedList<Type>::~OrderedLinkedList()
 template<class Type>
 void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 	nodeType<string>* previous, string idNum, string firstName,
-	string lastName, string major, string gpa, string credits)
+	string lastName, string tmajor, string gpa, string credits)
 {
-
-
 	nodeType<string> * node = new nodeType<string>
-		(nullptr, nullptr, idNum, firstName, lastName, major, gpa, credits);
+		(nullptr, nullptr, idNum, firstName, lastName, tmajor, gpa, credits);
 	count++;
+	cout << "Inserted:" << endl << node->firstName << endl << node->lastName << endl << node->tmajor << endl << endl;
+
 	//if the file is empty just insert the node
 	if (this->isEmptyList()) {
 		node->next = this->last;
@@ -199,14 +200,18 @@ void OrderedLinkedList<Type>::PRINT_ROSTER(ofstream& outfile, ifstream& infile) 
 }
 
 template<class Type>
-void OrderedLinkedList<Type>::PRINT_BY_MAJOR(string& major, ofstream& outfile, ifstream& infile)
+void OrderedLinkedList<Type>::PRINT_BY_MAJOR(string tmajor, ofstream& outfile, ifstream& infile)
 {
 	nodeType<string>* reader = this->first;
+	cout << "P_B_M" << endl;
 	while(reader)
 	{
-		if(reader->major == major)
+		cout << "Entered PBM while loop" << endl;
+		if(reader->tmajor == tmajor)
 		{
 			outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl;
+			cout << reader->firstName << endl << reader->lastName << endl << reader->tmajor << endl;
+
 		}
 		reader = reader->next;
 	}
@@ -217,7 +222,7 @@ void OrderedLinkedList<Type>::PRINT_BY_MAJOR(string& major, ofstream& outfile, i
 }
 
 template<class Type>
-void OrderedLinkedList<Type>::PRINT_BY_GPA(string& gpa, ofstream& outfile, ifstream& infile)
+void OrderedLinkedList<Type>::PRINT_BY_GPA(string gpa, ofstream& outfile, ifstream& infile)
 {
 	nodeType<string>* reader = this->first;
 	while (reader)
@@ -238,7 +243,7 @@ void OrderedLinkedList<Type>::PRINT_BY_GPA(string& gpa, ofstream& outfile, ifstr
 
 
 template <class Type>
-void OrderedLinkedList<Type>::PRINT_STUDENT(string& firstName, string& lastName, ofstream& outfile, ifstream& infile)
+void OrderedLinkedList<Type>::PRINT_STUDENT(string firstName, string lastName, ofstream& outfile, ifstream& infile)
 {
 	nodeType<string>* reader = this->first;
 	while(reader->lastName != lastName && reader->firstName != firstName)
@@ -247,7 +252,7 @@ void OrderedLinkedList<Type>::PRINT_STUDENT(string& firstName, string& lastName,
 	}
 
 	outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl
-		<< "Major: " << reader->major << endl << "GPA: " << reader->gpa << endl << "Credits Enrolled: " << reader->credits << endl;
+		<< "major: " << reader->tmajor << endl << "GPA: " << reader->gpa << endl << "Credits Enrolled: " << reader->credits << endl;
 	if(!infile.eof())
 	{
 		outfile << endl;
@@ -255,7 +260,7 @@ void OrderedLinkedList<Type>::PRINT_STUDENT(string& firstName, string& lastName,
 }
 
 template<class Type>
-void OrderedLinkedList<Type>::DELETE_STUDENT(string & firstName, string & lastName)
+void OrderedLinkedList<Type>::DELETE_STUDENT(string firstName, string lastName)
 {
 	nodeType<string>* reader = this->first;
 	while(reader->lastName != lastName && reader->firstName != firstName)
@@ -280,7 +285,7 @@ void OrderedLinkedList<Type>::DELETE_STUDENT(string & firstName, string & lastNa
 }
 
 template<class Type>
-void OrderedLinkedList<Type>::DELETE_ID(string & id)
+void OrderedLinkedList<Type>::DELETE_ID(string id)
 {
 	nodeType<string>* reader = this->first;
 	while (reader->idNum != id)
@@ -305,7 +310,7 @@ void OrderedLinkedList<Type>::DELETE_ID(string & id)
 }
 
 template<class Type>
-void OrderedLinkedList<Type>::UPDATE_GPA(string & firstName, string & lastName, string& gpa)
+void OrderedLinkedList<Type>::UPDATE_GPA(string firstName, string lastName, string gpa)
 {
 	nodeType<string>* reader = this->first;
 	while (reader->lastName != lastName && reader->firstName != firstName)
@@ -316,18 +321,18 @@ void OrderedLinkedList<Type>::UPDATE_GPA(string & firstName, string & lastName, 
 }
 
 template<class Type>
-void OrderedLinkedList<Type>::UPDATE_MAJOR(string & firstName, string & lastName, string & major)
+void OrderedLinkedList<Type>::UPDATE_MAJOR(string firstName, string lastName, string tmajor)
 {
 	nodeType<string>* reader = this->first;
 	while (reader->lastName != lastName && reader->firstName != firstName)
 	{
 		reader = reader->next;
 	}
-	reader->major = major;
+	reader->tmajor = tmajor;
 }
 
 template<class Type>
-void OrderedLinkedList<Type>::ADD_CLASS(string & firstName, string & lastName, string& credits)
+void OrderedLinkedList<Type>::ADD_CLASS(string firstName, string lastName, string credits)
 {
 	nodeType<string>* reader = this->first;
 	while (reader->lastName != lastName && reader->firstName != firstName)
@@ -341,7 +346,7 @@ void OrderedLinkedList<Type>::ADD_CLASS(string & firstName, string & lastName, s
 }
 
 template<class Type>
-void OrderedLinkedList<Type>::REMOVE_CLASS(string & firstName, string & lastName, string& credits)
+void OrderedLinkedList<Type>::REMOVE_CLASS(string firstName, string lastName, string credits)
 {
 	nodeType<string>* reader = this->first;
 	while (reader->lastName != lastName && reader->firstName != firstName)
@@ -366,4 +371,16 @@ void OrderedLinkedList<Type>::GPA(ofstream& outfile)
 	const double mean = total / count;
 
 	outfile << setprecision(3) << "GPA mean: " << mean << setprecision(6) << endl << endl;
+}
+
+template<class Type>
+inline void OrderedLinkedList<Type>::pc()
+{
+	int count{ 0 };
+	nodeType<string>* reader = this->first;
+	while (reader)
+	{
+		cout << "What the list has at the end of main" << endl << reader->lastName << endl << reader->firstName << endl << reader->tmajor << reader->idNum << ++count << endl << reader->gpa << endl << reader->credits << endl;
+		reader = reader->next;
+	}
 }
