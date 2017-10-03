@@ -62,7 +62,6 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 	nodeType<string> * node = new nodeType<string>
 		(nullptr, nullptr, idNum, firstName, lastName, tmajor, gpa, credits);
 	count++;
-	cout << "Inserted:" << endl << node->firstName << endl << node->lastName << endl << node->tmajor << endl << endl;
 
 	//if the file is empty just insert the node
 	if (this->isEmptyList()) {
@@ -203,15 +202,11 @@ template<class Type>
 void OrderedLinkedList<Type>::PRINT_BY_MAJOR(string tmajor, ofstream& outfile, ifstream& infile)
 {
 	nodeType<string>* reader = this->first;
-	cout << "P_B_M" << endl;
 	while(reader)
 	{
-		cout << "Entered PBM while loop" << endl;
 		if(reader->tmajor == tmajor)
 		{
 			outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl;
-			cout << reader->firstName << endl << reader->lastName << endl << reader->tmajor << endl;
-
 		}
 		reader = reader->next;
 	}
@@ -374,13 +369,12 @@ void OrderedLinkedList<Type>::GPA(ofstream& outfile)
 }
 
 template<class Type>
-inline void OrderedLinkedList<Type>::pc()
+void OrderedLinkedList<Type>::pc()
 {
 	int count{ 0 };
 	nodeType<string>* reader = this->first;
 	while (reader)
 	{
-		cout << "What the list has at the end of main" << endl << reader->lastName << endl << reader->firstName << endl << reader->tmajor << reader->idNum << ++count << endl << reader->gpa << endl << reader->credits << endl;
 		reader = reader->next;
 	}
 }

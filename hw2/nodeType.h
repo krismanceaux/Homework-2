@@ -9,8 +9,8 @@ struct nodeType
 	Type firstName;
 	Type lastName;
 	Type tmajor;
-	Type gpa = 0;
-	Type credits = 0;
+	Type gpa;
+	Type credits;
 	
 	//don't use
 	Type info = "";
