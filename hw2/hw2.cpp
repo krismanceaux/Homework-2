@@ -124,6 +124,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 	//while there are lines to be read
 	while (infile.good())
 	{
+
 		string line2;
 		getline(infile, line2);
 		//store variables locally
