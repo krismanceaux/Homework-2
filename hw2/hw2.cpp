@@ -149,17 +149,17 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 			}
 			b1 -= 1;
 		}
-		if (b2 == 2)
+		else if (b2 == 2)
 		{
 			firstName = line2;
 			b2 -= 2;
 		}
-		if (b3 == 3)
+		else if (b3 == 3)
 		{
 			lastName = line2;
 			b3 -= 3;
 		}
-		if (b4 == 4)
+		else if (b4 == 4)
 		{
 			try {
 				if (!checkMajor(line2))
@@ -180,7 +180,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 			}
 			b4 -= 4;
 		}
-		if (b5 == 5)
+		else if (b5 == 5)
 		{
 			try
 			{
@@ -203,7 +203,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 			}
 			b5 -= 5;
 		}
-		if (b6 == 6)
+		else if (b6 == 6)
 		{
 			try {
 				if (line2 == "")
