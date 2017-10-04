@@ -241,13 +241,13 @@ template <class Type>
 void OrderedLinkedList<Type>::PRINT_STUDENT(string firstName, string lastName, ofstream& outfile, ifstream& infile)
 {
 	nodeType<string>* reader = this->first;
-	while(reader->lastName != lastName && reader->firstName != firstName)
+	while(reader && reader->lastName != lastName && reader->firstName != firstName)
 	{
 		reader = reader->next;
 	}
 
 	outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl
-		<< "major: " << reader->tmajor << endl << "GPA: " << reader->gpa << endl << "Credits Enrolled: " << reader->credits << endl;
+		<< "Major: " << reader->tmajor << endl << "GPA: " << reader->gpa << endl << "Credits Enrolled: " << reader->credits << endl;
 	if(!infile.eof())
 	{
 		outfile << endl;

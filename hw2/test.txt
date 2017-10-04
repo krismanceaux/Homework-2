@@ -1,45 +1,41 @@
 INSERT
-03827
-Anne
-Hathaway
-4.00
-12
+Person
+A
 
 INSERT
-John
-Belushi
-Music
-2.50
-6
+asdfa
+Person
+B
 
 INSERT
-13928
-Kit
-Harrington
-Geology
-9
+22222
+Person 
+C
+123445555555
+3.10
+15
 
 INSERT
-11556
-Dan
-Aykroyd
-Music
-3.20
+44444
+Person
+D
+Math
+Adsdsdada
 
-PRINT_BY_MAJOR
-Music
-
-PRINT_BY_GPA
-3.00
-
-REMOVE_CLASS
-Dan
-Aykroyd
-3
+PRINT_ROSTER
 
 PRINT_STUDENT
-Dan
-Aykroyd
+Person
+A
 
+PRINT_STUDENT
+Person
+B
 
+PRINT_STUDENT
+Person
+C
 
+PRINT_STUDENT
+Person
+D

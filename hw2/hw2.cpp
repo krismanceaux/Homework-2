@@ -9,6 +9,8 @@
 
 using namespace std;
 
+bool isNumber(string str);
+bool checkID(string idNum);
 void readFile(ifstream & infilename, ofstream& outfilename, OrderedLinkedList<nodeType<string>>& olList);
 void readVariables(ifstream & infilename, string& idNum, string& firstName, string& lastName, string& major, string& gpa, string& credits, int b1, int b2, int b3, int b4, int b5, int b6);
 bool checkGPA(string GPA2);
@@ -130,18 +132,27 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		//store variables locally
 		if (b1 == 1)
 		{
+			bool i{ 0 };
 
 			try {
+				if (checkMajor(line2))
+					throw(i);
 				if (line2 == "")
 					throw Exception(line2);
-				if (line2.size() != 5)
-					throw(idNum);
+				if (!checkID(line2))
+					throw(b1);
 				idNum = line2;
 			}
-			catch (const string e)
+			catch(bool e)
 			{
 				idNum = "0";
-				cout << "Your ID: " << e << " is the incorrect number of digits. It must be 5 digits long" << endl;
+			}
+			catch (int e)
+			{
+				idNum = "0";
+				firstName = line2;
+				b2 -= 2;
+				cout << "Your ID is the incorrect number of digits. It must be 5 digits long" << endl;
 			}
 			catch (Exception e)
 			{
@@ -163,8 +174,9 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		else if (b4 == 4)
 		{
 			try {
+
 				if (!checkMajor(line2))
-					throw line2;
+					throw b4;
 				if (line2 == "")
 					throw Exception(line2);
 				major = line2;
@@ -173,11 +185,20 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 				major = "";
 				cout << e.argMissing() << endl;
 			}
-			catch (string e)
+			catch (int e)
 			{
 				cout << "Major is either in incorrect format or not listed" << endl;
 				major = "";
-				b5 = 5;
+				if(checkGPA(line2))
+				{
+					gpa = line2;
+					b5 -= 5;
+				}
+				if(!checkCredits(line2))
+				{
+					credits = line2;
+					b6 -= 6;
+				}
 			}
 			b4 -= 4;
 		}
@@ -188,14 +209,20 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 				if (line2 == "")
 					throw Exception(line2);
 				if (!checkGPA(line2))
-					throw line2;
+					throw b5;
 				gpa = line2;
 
 			}
-			catch (string e)
+			catch (int e)
 			{
-				gpa = "0.00";
-				cout << "Your GPA: " << e << " is in the incorrect GPA format. Example: 3.58 or 0.00. It must be a number in between 0.00 and 4.00" << endl;
+				gpa = "0";
+				cout << "Your GPA is in the incorrect GPA format or it is missing. \
+				Example: 3.58 or 0.00. It must be a number in between 0.00 and 4.00" << endl;
+				if(checkCredits(line2))
+				{
+					credits = line2;
+					b6 -= 6; 
+				}
 			}
 			catch (Exception e)
 			{
@@ -206,18 +233,20 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		}
 		else if (b6 == 6)
 		{
+			bool b{ 0 };
 			try {
 				if (line2 == "")
 					throw Exception(line2);
+
 				if (!checkCredits(line2))
-					throw line2;
+					throw b6;
 
 				credits = line2;
 			}
-			catch (string e)
+			catch (int e)
 			{
 				credits = "0";
-				cout << "Your credits: " << e << " is in the wrong format. It must be a whole number between 0 and 15." << endl;
+				cout << "Your credits is in the wrong format. It must be a whole number between 0 and 15." << endl;
 			}
 			catch (Exception e)
 			{
@@ -239,8 +268,14 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 
 bool checkGPA(string GPA2)
 {
-	double gpaNum = stod(GPA2);
-
+	double gpaNum;
+	if (isNumber(GPA2)) {
+		gpaNum = stod(GPA2);
+	}
+	else
+	{
+		return false;
+	}
 	bool flag{ true };
 	int count{ 0 };
 	for (char i : GPA2)
@@ -265,11 +300,20 @@ bool checkGPA(string GPA2)
 bool checkCredits(string credits)
 {
 	bool flag{ true };
-	int cr = stoi(credits);
-
-	if (cr < 0 || cr > 15)
+	for(char i : credits)
 	{
-		flag = false;
+		if(i == '.')
+		{
+			flag = false;
+		}
+	}
+	if (isNumber(credits)) {
+		long long cr = stoll(credits);
+
+		if (cr < 0 || cr > 15)
+		{
+			flag = false;
+		}
 	}
 	return flag;
 }
@@ -283,9 +327,28 @@ bool checkMajor(string major)
 		{
 			flag = false;
 		}
-		else
-			flag = true;
 	}
 	return flag;
 }
 
+bool checkID(string idNum)
+{
+	if (idNum.length() == 5)
+	{
+		return !checkMajor(idNum);
+	}
+	else
+		return false;
+}
+
+bool isNumber(string str)
+{
+	for(char i : str)
+	{
+		if(i < 48 && i != 46 || i > 57)
+		{
+			return false;
+		}
+	}
+	return true;
+}
