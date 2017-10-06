@@ -1,41 +1,49 @@
 INSERT
-Person
-A
+03827
+Anne
+Hathaway
+English
+4.00
+12
 
 INSERT
-asdfa
-Person
-B
+11293
+John
+Belushi
+Music
+2.50
+6
 
 INSERT
-22222
-Person 
-C
-123445555555
-3.10
-15
+13928
+Kit
+Harrington
+Geology
+3.75
+9
 
 INSERT
-44444
-Person
-D
-Math
-Adsdsdada
+11556
+Dan
+Aykroyd
+Music
+3.20
+12
 
-PRINT_ROSTER
+PRINT_BY_MAJOR
+Music
 
-PRINT_STUDENT
-Person
-A
+PRINT_BY_GPA
+3.00
 
-PRINT_STUDENT
-Person
-B
-
-PRINT_STUDENT
-Person
-C
+REMOVE_CLASS
+Dan
+Aykroyd
+3
 
 PRINT_STUDENT
-Person
-D
+Dan
+Aykroyd
+
+
+

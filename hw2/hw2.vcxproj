@@ -144,9 +144,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArgumentManager.h" />
+    <ClInclude Include="CreditCheck.h" />
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="FirstNameCheck.h" />
+    <ClInclude Include="GPACheck.h" />
+    <ClInclude Include="IDCheck.h" />
+    <ClInclude Include="LastNameCheck.h.h" />
     <ClInclude Include="linkedListIterator.h" />
     <ClInclude Include="linkedListType.h" />
+    <ClInclude Include="MajorCheck.h" />
     <ClInclude Include="nodeType.h" />
     <ClInclude Include="OrderedLinkedList.h" />
     <ClInclude Include="stdafx.h" />

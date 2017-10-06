@@ -6,6 +6,12 @@
 #include "ArgumentManager.h"
 #include "OrderedLinkedList.h"
 #include "Exception.h"
+#include "CreditCheck.h"
+#include "IDCheck.h"
+#include "FirstNameCheck.h"
+#include "LastNameCheck.h.h"
+#include "MajorCheck.h"
+#include "GPACheck.h"
 
 using namespace std;
 
@@ -123,6 +129,14 @@ void readFile(ifstream & infile, ofstream & outfile, OrderedLinkedList<nodeType<
 
 void readVariables(ifstream & infile, string& idNum, string& firstName, string& lastName, string& major, string& gpa, string& credits, int b1, int b2, int b3, int b4, int b5, int b6)
 {
+	IDCheck idc{};
+	MajorCheck majc{};
+	FirstNameCheck fnc{};
+	LastNameCheck lnc{};
+	GPACheck gpac{};
+	CreditCheck cc{};
+
+
 	//while there are lines to be read
 	while (infile.good())
 	{
@@ -132,27 +146,23 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		//store variables locally
 		if (b1 == 1)
 		{
-			bool i{ 0 };
-
 			try {
-				if (checkMajor(line2))
-					throw(i);
+				//if this fits the description for major, store in major
 				if (line2 == "")
 					throw Exception(line2);
-				if (!checkID(line2))
-					throw(b1);
+				else if (!idc.checkID(line2))
+					throw(idc);
 				idNum = line2;
 			}
-			catch(bool e)
+			
+			catch (IDCheck& e)
 			{
 				idNum = "0";
-			}
-			catch (int e)
-			{
-				idNum = "0";
-				firstName = line2;
-				b2 -= 2;
-				cout << "Your ID is the incorrect number of digits. It must be 5 digits long" << endl;
+				if (fnc.checkFN(line2)) {
+					firstName = line2;
+					b2 -= 2;
+					cout << e.idFormat() << endl;
+				}
 			}
 			catch (Exception e)
 			{
@@ -163,38 +173,57 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		}
 		else if (b2 == 2)
 		{
-			firstName = line2;
-			b2 -= 2;
+			try
+			{
+				if (!fnc.checkFN(line2))
+					throw(fnc);
+				firstName = line2;
+				b2 -= 2;
+
+			}
+			catch (FirstNameCheck& e)
+			{
+				cout << e.fnFormat() << endl;
+			}
 		}
 		else if (b3 == 3)
 		{
-			lastName = line2;
-			b3 -= 3;
+			try
+			{
+				if (!lnc.checkLN(line2))
+					throw(lnc);
+				lastName = line2;
+				b3 -= 3;
+			}
+			catch (LastNameCheck & e)
+			{
+				cout << e.lnFormat() << endl;
+			}
 		}
 		else if (b4 == 4)
 		{
 			try {
 
-				if (!checkMajor(line2))
-					throw b4;
+				if (!MajorCheck::isLetter(line2))
+					throw majc;
 				if (line2 == "")
 					throw Exception(line2);
 				major = line2;
 			}
 			catch (Exception e) {
-				major = "";
+				major = "Unknown";
 				cout << e.argMissing() << endl;
 			}
-			catch (int e)
+			catch (MajorCheck e)
 			{
-				cout << "Major is either in incorrect format or not listed" << endl;
-				major = "";
-				if(checkGPA(line2))
+				cout << majc.majFormat(line2) << endl;
+				major = "Unknown";
+				if(gpac.checkGPA(line2))
 				{
 					gpa = line2;
 					b5 -= 5;
 				}
-				if(!checkCredits(line2))
+				if(cc.checkCredits(line2))
 				{
 					credits = line2;
 					b6 -= 6;
@@ -204,21 +233,21 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		}
 		else if (b5 == 5)
 		{
+
 			try
 			{
 				if (line2 == "")
 					throw Exception(line2);
-				if (!checkGPA(line2))
-					throw b5;
+				if (!gpac.checkGPA(line2))
+					throw gpac;
 				gpa = line2;
 
 			}
-			catch (int e)
+			catch (GPACheck& e)
 			{
 				gpa = "0";
-				cout << "Your GPA is in the incorrect GPA format or it is missing. \
-				Example: 3.58 or 0.00. It must be a number in between 0.00 and 4.00" << endl;
-				if(checkCredits(line2))
+				cout << e.gpaFormat(line2) << endl;
+				if(cc.checkCredits(line2))
 				{
 					credits = line2;
 					b6 -= 6; 
@@ -233,20 +262,19 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		}
 		else if (b6 == 6)
 		{
-			bool b{ 0 };
 			try {
 				if (line2 == "")
 					throw Exception(line2);
 
-				if (!checkCredits(line2))
-					throw b6;
+				if (!cc.checkCredits(line2))
+					throw cc;
 
 				credits = line2;
 			}
-			catch (int e)
+			catch (CreditCheck& e)
 			{
 				credits = "0";
-				cout << "Your credits is in the wrong format. It must be a whole number between 0 and 15." << endl;
+				cout << e.creditFormat(line2) << endl;
 			}
 			catch (Exception e)
 			{
@@ -264,91 +292,4 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 			break;
 		}
 	}
-}
-
-bool checkGPA(string GPA2)
-{
-	double gpaNum;
-	if (isNumber(GPA2)) {
-		gpaNum = stod(GPA2);
-	}
-	else
-	{
-		return false;
-	}
-	bool flag{ true };
-	int count{ 0 };
-	for (char i : GPA2)
-	{
-		if (i < 48 && i != 46 || i > 57)
-		{
-			flag = false;
-		}
-		count++;
-	}
-	if (GPA2[1] != '.')
-	{
-		flag = false;
-	}
-	if (gpaNum < 0.0 || gpaNum > 4.0)
-	{
-		flag = false;
-	}
-	return flag;
-}
-
-bool checkCredits(string credits)
-{
-	bool flag{ true };
-	for(char i : credits)
-	{
-		if(i == '.')
-		{
-			flag = false;
-		}
-	}
-	if (isNumber(credits)) {
-		long long cr = stoll(credits);
-
-		if (cr < 0 || cr > 15)
-		{
-			flag = false;
-		}
-	}
-	return flag;
-}
-
-bool checkMajor(string major)
-{
-	bool flag = true;
-	for (char i : major)
-	{
-		if (i <65 || i > 90 && i < 97 || i > 122)
-		{
-			flag = false;
-		}
-	}
-	return flag;
-}
-
-bool checkID(string idNum)
-{
-	if (idNum.length() == 5)
-	{
-		return !checkMajor(idNum);
-	}
-	else
-		return false;
-}
-
-bool isNumber(string str)
-{
-	for(char i : str)
-	{
-		if(i < 48 && i != 46 || i > 57)
-		{
-			return false;
-		}
-	}
-	return true;
 }

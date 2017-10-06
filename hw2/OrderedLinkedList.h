@@ -46,7 +46,7 @@ OrderedLinkedList<Type>::OrderedLinkedList()
 }
 
 template<class Type>
-inline OrderedLinkedList<Type>::~OrderedLinkedList()
+OrderedLinkedList<Type>::~OrderedLinkedList()
 {
 	this->destroyList();
 }
@@ -73,14 +73,31 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 	//if the file is not empty, walk through the list to find the alphabetical position to insert the node.
 	else if (!this->isEmptyList()){
 		nodeType<string>* reader = this->first;
-		//while reader is not null and (the passed in last name is greater than reader or (the last names are equal and the passed in first name is greater than reader))
-		while (reader && (lastName > reader->lastName || (lastName == reader->lastName && firstName > reader->firstName)))
+		bool idPresent{ false };
+		nodeType<string>* idChecker = this->first;
+		while (idChecker)
 		{
+			if(idChecker->idNum == idNum)
+			{
+				cout << "Duplicate entry. Input rejected." << endl;
+				delete node;
+				count--;
+
+				idPresent = true;
+			}
+			idChecker = idChecker->next;
+		}
+
+		//while reader is not null and (the passed in last name is greater than reader or (the last names are equal and the passed in first name is greater than reader))
+		while (reader && (lastName > reader->lastName || (lastName == reader->lastName && firstName > reader->firstName)) && idPresent == false)
+		{
+			
+
 			reader = reader->next;
 		}
 
 		//If the names are equal, compare ID numbers and reject duplicates
-		if(reader && reader->lastName == lastName)
+		if(idPresent == false && (reader && reader->lastName == lastName))
 		{
 			if(reader->firstName == firstName || reader->idNum == idNum)
 			{
@@ -127,7 +144,7 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 		}
 
 		//If we've made it to the very end of the list
-		else if(reader == nullptr)
+		else if(idPresent == false && reader == nullptr)
 		{
 			node->next = nullptr;
 			node->previous = this->last;
@@ -135,7 +152,7 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 			this->last = node;
 		}
 		//Insert in front of the node that reader stopped on
-		else
+		else if(idPresent == false)
 		{
 			
 			node->next = reader;
@@ -241,14 +258,24 @@ template <class Type>
 void OrderedLinkedList<Type>::PRINT_STUDENT(string firstName, string lastName, ofstream& outfile, ifstream& infile)
 {
 	nodeType<string>* reader = this->first;
+	bool studentFound{ false };
 	while(reader && reader->lastName != lastName && reader->firstName != firstName)
 	{
 		reader = reader->next;
+		//if we have reached nunllptr, the the student doesn't exist, so change studentFound
+		if(reader == nullptr)
+		{
+			studentFound = true;
+		}
 	}
 
-	outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl
-		<< "Major: " << reader->tmajor << endl << "GPA: " << reader->gpa << endl << "Credits Enrolled: " << reader->credits << endl;
-	if(!infile.eof())
+	//if the student is not found then we can output the student
+	if (!studentFound)
+	{
+		outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl
+			<< "Major: " << reader->tmajor << endl << "GPA: " << reader->gpa << endl << "Credits Enrolled: " << reader->credits << endl;
+	}
+	if(!infile.eof() && !studentFound)
 	{
 		outfile << endl;
 	}
