@@ -9,7 +9,7 @@
 #include "CreditCheck.h"
 #include "IDCheck.h"
 #include "FirstNameCheck.h"
-#include "LastNameCheck.h.h"
+#include "LastNameCheck.h"
 #include "MajorCheck.h"
 #include "GPACheck.h"
 
@@ -63,31 +63,39 @@ void readFile(ifstream & infile, ofstream & outfile, OrderedLinkedList<nodeType<
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 1, 2, 3, 4, 5, 6);
 			olList.INSERT(nullptr, nullptr, idNum, firstName, lastName, major, gpa, credits);
 		}
+		//if line is print_roster, read the following cariables and call respecting method
 		else if (line == "PRINT_ROSTER")
 		{
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 0, 0, 0, 0, 0);
-			olList.PRINT_ROSTER(outfile, infile);
+			olList.PRINT_ROSTER(outfile);
+			outfile << endl;
 		}
 
+		//if line is print_by_major, read the following cariables and call respecting method
 		else if (line == "PRINT_BY_MAJOR")
 		{
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 0, 0, 4, 0, 0);
-			olList.PRINT_BY_MAJOR(major, outfile, infile);
+			olList.PRINT_BY_MAJOR(major, outfile);
+			outfile << endl;
 		}
 
-
+		//if line is print_by_gpa, read the following cariables and call respecting method
 		else if (line == "PRINT_BY_GPA") {
 			//call read variables
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 0, 0, 0, 5, 0);
-			olList.PRINT_BY_GPA(gpa, outfile, infile);
+			olList.PRINT_BY_GPA(gpa, outfile);
+			outfile << endl;
 		}
 
+		//if line is print_student, read the following cariables and call respecting method
 
 		else if (line == "PRINT_STUDENT") {
 			//call readVariables
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 2, 3, 0, 0, 0);
-			olList.PRINT_STUDENT(firstName, lastName, outfile, infile);
+			olList.PRINT_STUDENT(firstName, lastName, outfile);
+			outfile << endl;
 		}
+		
 		else if (line == "DELETE_STUDENT") {
 			//call readVariables
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 0, 2, 3, 0, 0, 0);
@@ -147,9 +155,10 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		if (b1 == 1)
 		{
 			try {
-				//if this fits the description for major, store in major
+				//if the line is blank there is an argument missing
 				if (line2 == "")
 					throw Exception(line2);
+				//check if input is valid
 				else if (!idc.checkID(line2))
 					throw(idc);
 				idNum = line2;
@@ -157,7 +166,9 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 			
 			catch (IDCheck& e)
 			{
+				//set number to default value
 				idNum = "0";
+				//if the parameter fits the description for the first name, that means the ID is missing and we can store the line in firstname
 				if (fnc.checkFN(line2)) {
 					firstName = line2;
 					b2 -= 2;
@@ -166,6 +177,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 			}
 			catch (Exception e)
 			{
+				//set number to default value
 				idNum = "0";
 				cout << e.argMissing() << endl;
 			}
@@ -175,6 +187,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		{
 			try
 			{
+				//validate first name
 				if (!fnc.checkFN(line2))
 					throw(fnc);
 				firstName = line2;
@@ -190,6 +203,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		{
 			try
 			{
+				//check input validity
 				if (!lnc.checkLN(line2))
 					throw(lnc);
 				lastName = line2;
@@ -203,7 +217,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		else if (b4 == 4)
 		{
 			try {
-
+				//validate input
 				if (!MajorCheck::isLetter(line2))
 					throw majc;
 				if (line2 == "")
@@ -218,11 +232,13 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 			{
 				cout << majc.majFormat(line2) << endl;
 				major = "Unknown";
+				//if the argument fits the description for gpa, store it in gpa
 				if(gpac.checkGPA(line2))
 				{
 					gpa = line2;
 					b5 -= 5;
 				}
+				//if the argument fits the description for credits, store it in credits
 				if(cc.checkCredits(line2))
 				{
 					credits = line2;
@@ -238,6 +254,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 			{
 				if (line2 == "")
 					throw Exception(line2);
+				//validate input
 				if (!gpac.checkGPA(line2))
 					throw gpac;
 				gpa = line2;
@@ -245,8 +262,9 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 			}
 			catch (GPACheck& e)
 			{
-				gpa = "0";
+				gpa = "0.00";
 				cout << e.gpaFormat(line2) << endl;
+				//if the argument fits the description for credits
 				if(cc.checkCredits(line2))
 				{
 					credits = line2;
@@ -255,7 +273,7 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 			}
 			catch (Exception e)
 			{
-				gpa = "0";
+				gpa = "0.00";
 				cout << e.argMissing() << endl;
 			}
 			b5 -= 5;
@@ -263,9 +281,10 @@ void readVariables(ifstream & infile, string& idNum, string& firstName, string& 
 		else if (b6 == 6)
 		{
 			try {
+				//check for missing arguments
 				if (line2 == "")
 					throw Exception(line2);
-
+				//validate input
 				if (!cc.checkCredits(line2))
 					throw cc;
 

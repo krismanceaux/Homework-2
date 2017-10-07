@@ -3,6 +3,9 @@
 #include "GPACheck.h"
 using namespace std;
 
+/* This is an exception class for validating the credits
+*/
+
 class CreditCheck
 {
 private:
@@ -15,10 +18,14 @@ public:
 	{
 		creditFormat(creditCheck);
 	}
+
+	//return the error message
 	string creditFormat(string creditCheck)
 	{
 		return this->creditCheck;
 	}
+
+	//check if the argument fits the description for credits
 	bool checkCredits(string credits)
 	{
 		bool flag{ true };

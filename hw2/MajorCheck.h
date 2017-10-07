@@ -2,6 +2,9 @@
 #include <string>
 using namespace std;
 
+/* This is an exception class for validating the major
+*/
+
 class MajorCheck
 {
 private:
@@ -14,6 +17,8 @@ public:
 	{
 		return this->majCheck;
 	}
+
+	//check if the arg fits the description for major
 	static bool isLetter(string major)
 	{
 		bool flag = true;

@@ -1,7 +1,11 @@
 #pragma once
 
 #include <string>
+#include "GPACheck.h"
 using namespace std;
+
+/* This is an exception class for validating the Last Name
+*/
 
 class LastNameCheck
 {
@@ -16,10 +20,13 @@ public:
 		lnFormat();
 	}
 
+	//return error message
 	string lnFormat()
 	{
 		return this->lnCheck;
 	}
+
+	//check if the last name contains numbers
 	bool checkLN(string ln)
 	{
 		bool flag{ true };

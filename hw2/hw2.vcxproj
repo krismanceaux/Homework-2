@@ -149,7 +149,7 @@
     <ClInclude Include="FirstNameCheck.h" />
     <ClInclude Include="GPACheck.h" />
     <ClInclude Include="IDCheck.h" />
-    <ClInclude Include="LastNameCheck.h.h" />
+    <ClInclude Include="LastNameCheck.h" />
     <ClInclude Include="linkedListIterator.h" />
     <ClInclude Include="linkedListType.h" />
     <ClInclude Include="MajorCheck.h" />

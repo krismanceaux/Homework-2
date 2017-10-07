@@ -2,6 +2,9 @@
 #include <string>
 using namespace std;
 
+/* This is an exception class for validating the gpa
+*/
+
 class GPACheck
 {
 private:
@@ -20,7 +23,7 @@ public:
 		return this->gpaCheck;
 	}
 
-	// static fincction to check if a certain string represents a number. may be used across other classes
+	// static function to check if a certain string represents a number. may be used across other classes
 	static bool isNumber(string str)
 	{
 		for (char i : str)
@@ -33,6 +36,7 @@ public:
 		return true;
 	}
 
+	//check if the arg fits the description for gpa
 	bool checkGPA(string GPA2)
 	{
 		double gpaNum;

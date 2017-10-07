@@ -24,10 +24,10 @@ public:
 	void insertLast(const Type& newItem);
 	bool search(const Type& searchItem) const;
 	void deleteNode(const Type& deleteItem);
-	void PRINT_ROSTER(ofstream& outfile, ifstream& infile) const;
-	void PRINT_BY_MAJOR(string tmajor, ofstream& outfile, ifstream& infile);
-	void PRINT_BY_GPA(string gpa, ofstream& outfile, ifstream& infile);
-	void PRINT_STUDENT(string firstName, string lastName, ofstream& outfile, ifstream& infile);
+	void PRINT_ROSTER(ofstream& outfile) const;
+	void PRINT_BY_MAJOR(string tmajor, ofstream& outfile);
+	void PRINT_BY_GPA(string gpa, ofstream& outfile);
+	void PRINT_STUDENT(string firstName, string lastName, ofstream& outfile);
 	void DELETE_STUDENT(string firstName, string lastName);
 	void DELETE_ID(string id);
 	void UPDATE_GPA(string firstName, string lastName, string gpa);
@@ -59,9 +59,15 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 	nodeType<string>* previous, string idNum, string firstName,
 	string lastName, string tmajor, string gpa, string credits)
 {
+	
 	nodeType<string> * node = new nodeType<string>
 		(nullptr, nullptr, idNum, firstName, lastName, tmajor, gpa, credits);
 	count++;
+
+	if (node->idNum == "-1" || node->gpa == "-1" || node->tmajor == "-1")
+	{
+		delete node;
+	}
 
 	//if the file is empty just insert the node
 	if (this->isEmptyList()) {
@@ -75,8 +81,10 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 		nodeType<string>* reader = this->first;
 		bool idPresent{ false };
 		nodeType<string>* idChecker = this->first;
+		//check if there is a matching id
 		while (idChecker)
 		{
+			//kick out the duplicate
 			if(idChecker->idNum == idNum)
 			{
 				cout << "Duplicate entry. Input rejected." << endl;
@@ -88,7 +96,7 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 			idChecker = idChecker->next;
 		}
 
-		//while reader is not null and (the passed in last name is greater than reader or (the last names are equal and the passed in first name is greater than reader))
+		//while reader is not null and (the passed in last name is greater than reader or (the last names are equal and the passed in first name is greater than reader)) and there are no duplicate IDs
 		while (reader && (lastName > reader->lastName || (lastName == reader->lastName && firstName > reader->firstName)) && idPresent == false)
 		{
 			
@@ -96,7 +104,7 @@ void OrderedLinkedList<Type>::INSERT(nodeType<string>* next,
 			reader = reader->next;
 		}
 
-		//If the names are equal, compare ID numbers and reject duplicates
+		//If the names are equal and the IDs are not equal reject duplicates
 		if(idPresent == false && (reader && reader->lastName == lastName))
 		{
 			if(reader->firstName == firstName || reader->idNum == idNum)
@@ -199,9 +207,9 @@ void OrderedLinkedList<Type>::deleteNode(const Type& deleteItem)
 }
 
 
-
+//output the first name, last name, and ID
 template<class Type>
-void OrderedLinkedList<Type>::PRINT_ROSTER(ofstream& outfile, ifstream& infile) const
+void OrderedLinkedList<Type>::PRINT_ROSTER(ofstream& outfile) const
 {
 	nodeType<string>* reader = this->first;
 	while(reader)
@@ -209,14 +217,13 @@ void OrderedLinkedList<Type>::PRINT_ROSTER(ofstream& outfile, ifstream& infile) 
 		outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl;
 		reader = reader->next;
 	}
-	if (!infile.eof())
-	{
-		outfile << endl;
-	}
+	
 }
 
+
+//output by major first name, last name, and ID
 template<class Type>
-void OrderedLinkedList<Type>::PRINT_BY_MAJOR(string tmajor, ofstream& outfile, ifstream& infile)
+void OrderedLinkedList<Type>::PRINT_BY_MAJOR(string tmajor, ofstream& outfile)
 {
 	nodeType<string>* reader = this->first;
 	while(reader)
@@ -227,14 +234,12 @@ void OrderedLinkedList<Type>::PRINT_BY_MAJOR(string tmajor, ofstream& outfile, i
 		}
 		reader = reader->next;
 	}
-	if (!infile.eof())
-	{
-		outfile << endl;
-	}
+	
 }
 
+//output by gpa first name, last name, and ID
 template<class Type>
-void OrderedLinkedList<Type>::PRINT_BY_GPA(string gpa, ofstream& outfile, ifstream& infile)
+void OrderedLinkedList<Type>::PRINT_BY_GPA(string gpa, ofstream& outfile)
 {
 	nodeType<string>* reader = this->first;
 	while (reader)
@@ -247,15 +252,12 @@ void OrderedLinkedList<Type>::PRINT_BY_GPA(string gpa, ofstream& outfile, ifstre
 		}
 		reader = reader->next;
 	}
-	if (!infile.eof())
-	{
-		outfile << endl;
-	}
+	
 }
 
-
+//output first name, last name, ID
 template <class Type>
-void OrderedLinkedList<Type>::PRINT_STUDENT(string firstName, string lastName, ofstream& outfile, ifstream& infile)
+void OrderedLinkedList<Type>::PRINT_STUDENT(string firstName, string lastName, ofstream& outfile)
 {
 	nodeType<string>* reader = this->first;
 	bool studentFound{ false };
@@ -275,12 +277,10 @@ void OrderedLinkedList<Type>::PRINT_STUDENT(string firstName, string lastName, o
 		outfile << reader->firstName << " " << reader->lastName << ", " << reader->idNum << endl
 			<< "Major: " << reader->tmajor << endl << "GPA: " << reader->gpa << endl << "Credits Enrolled: " << reader->credits << endl;
 	}
-	if(!infile.eof() && !studentFound)
-	{
-		outfile << endl;
-	}
+	
 }
 
+//delete specified student
 template<class Type>
 void OrderedLinkedList<Type>::DELETE_STUDENT(string firstName, string lastName)
 {
@@ -306,6 +306,7 @@ void OrderedLinkedList<Type>::DELETE_STUDENT(string firstName, string lastName)
 	delete reader;
 }
 
+//delete student by ID
 template<class Type>
 void OrderedLinkedList<Type>::DELETE_ID(string id)
 {
@@ -380,6 +381,8 @@ void OrderedLinkedList<Type>::REMOVE_CLASS(string firstName, string lastName, st
 	reader->credits = to_string(cr1 - cr2);
 }
 
+
+//output average gpa
 template<class Type>
 void OrderedLinkedList<Type>::GPA(ofstream& outfile)
 {

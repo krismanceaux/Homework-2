@@ -1,6 +1,7 @@
 #pragma once
+/* This is an exception class for checking if a method call has no arguments
+*/
 
-using namespace std;
 class Exception
 {
 private: 
