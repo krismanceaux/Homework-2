@@ -2,14 +2,16 @@ INSERT
 30902
 Bruce
 Willis
+Chemistry
 2.75
 9
 
 INSERT
 01972
-Jack
-Nicholson
+Bruce
+Willis
 Math
+2.90
 9
 
 INSERT
@@ -18,15 +20,31 @@ Demi
 Moore
 English
 4.00
+9
 
-PRINT_STUDENT
-Bruce
-Willis
+INSERT
+30111
+Anne
+Hathaway
+English
+4.00
+12
 
-PRINT_STUDENT
-Jack
-Nicholson
+INSERT
+44998
+Jim
+Parson
+Physics
+3.95
+15
 
-PRINT_STUDENT
-Demi
-Moore
+UPDATE_MAJOR
+Anne
+Hathaway
+Physics
+3
+
+PRINT_BY_MAJOR
+Physics
+
+PRINT_ROSTER

@@ -48,7 +48,7 @@ void readFile(ifstream & infile, ofstream & outfile, OrderedLinkedList<nodeType<
 	string firstName{ "" };
 	string lastName{ "" };
 	string major{ "" };
-	string gpa{ "0.0" };
+	string gpa{ "0.00" };
 	string credits{ "0" };
 
 	//while there are lines to be read
@@ -61,7 +61,9 @@ void readFile(ifstream & infile, ofstream & outfile, OrderedLinkedList<nodeType<
 		if (line == "INSERT") {
 			//call readVariables
 			readVariables(infile, idNum, firstName, lastName, major, gpa, credits, 1, 2, 3, 4, 5, 6);
-			olList.INSERT(nullptr, nullptr, idNum, firstName, lastName, major, gpa, credits);
+			if (idNum != "0") {
+				olList.INSERT(nullptr, nullptr, idNum, firstName, lastName, major, gpa, credits);
+			}
 		}
 		//if line is print_roster, read the following cariables and call respecting method
 		else if (line == "PRINT_ROSTER")
